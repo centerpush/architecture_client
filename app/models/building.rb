@@ -21,7 +21,30 @@ class Building
     obj_buildings
   end
 
-  def self.find_by(building_id)
-    
+  def self.create(input_options)
+    response = HTTP.post("http://localhost:3000/api/buildings", 
+                         form: input_options
+                        )
+    building = response.parse
+    new_obj = Building.new(building)
+    new_obj
+  end
+
+  def self.find(building_id)
+    response = HTTP.get("http://localhost:3000/api/buildings/#{ building_id }")
+    building = response.parse
+    building_obj = Building.new(building)
+    building_obj
+  end
+
+  def update(params_hash)
+    response = HTTP.patch(
+                          "http://localhost:3000/api/buildings/#{id}", 
+                          form: params_hash
+                          )
+  end
+
+  def destroy
+    response = HTTP.delete("http://localhost:3000/api/buildings/#{id}")
   end
 end
